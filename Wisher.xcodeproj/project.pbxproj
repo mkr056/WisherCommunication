@@ -28,6 +28,9 @@
 		BE3456C929747211005A1B19 /* CreateNewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3456C829747211005A1B19 /* CreateNewPost.swift */; };
 		BE3456CB29747242005A1B19 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3456CA29747242005A1B19 /* Post.swift */; };
 		BE3456CD29747C4F005A1B19 /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3456CC29747C4F005A1B19 /* PostsView.swift */; };
+		BEC2E18629752A9200A2A5C2 /* ReusablePostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */; };
+		BEC2E18829752E7B00A2A5C2 /* PostCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */; };
+		BEC2E18C29753E9A00A2A5C2 /* SearchUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18B29753E9A00A2A5C2 /* SearchUserView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		BE3456C829747211005A1B19 /* CreateNewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPost.swift; sourceTree = "<group>"; };
 		BE3456CA29747242005A1B19 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		BE3456CC29747C4F005A1B19 /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
+		BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusablePostsView.swift; sourceTree = "<group>"; };
+		BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardView.swift; sourceTree = "<group>"; };
+		BEC2E18B29753E9A00A2A5C2 /* SearchUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,10 +151,10 @@
 			isa = PBXGroup;
 			children = (
 				BE3456BF297433B7005A1B19 /* MainView.swift */,
-				BE3456C1297434A2005A1B19 /* ProfileView.swift */,
-				BE3456C329743B1A005A1B19 /* ReusableProfileContent.swift */,
 				BE3456C829747211005A1B19 /* CreateNewPost.swift */,
-				BE3456CC29747C4F005A1B19 /* PostsView.swift */,
+				BEC2E18A29753C8500A2A5C2 /* ProfileView */,
+				BEC2E18929753C3400A2A5C2 /* PostView */,
+				BEC2E18B29753E9A00A2A5C2 /* SearchUserView.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -159,6 +165,25 @@
 				BE3456BD29743356005A1B19 /* View+Extensions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BEC2E18929753C3400A2A5C2 /* PostView */ = {
+			isa = PBXGroup;
+			children = (
+				BE3456CC29747C4F005A1B19 /* PostsView.swift */,
+				BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */,
+				BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */,
+			);
+			path = PostView;
+			sourceTree = "<group>";
+		};
+		BEC2E18A29753C8500A2A5C2 /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				BE3456C1297434A2005A1B19 /* ProfileView.swift */,
+				BE3456C329743B1A005A1B19 /* ReusableProfileContent.swift */,
+			);
+			path = ProfileView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,12 +275,15 @@
 				BE3456C0297433B7005A1B19 /* MainView.swift in Sources */,
 				BE3456AC29741235005A1B19 /* LoginView.swift in Sources */,
 				BE34569729740E8B005A1B19 /* ContentView.swift in Sources */,
+				BEC2E18629752A9200A2A5C2 /* ReusablePostsView.swift in Sources */,
 				BE3456BE29743356005A1B19 /* View+Extensions.swift in Sources */,
 				BE3456C929747211005A1B19 /* CreateNewPost.swift in Sources */,
 				BE3456CD29747C4F005A1B19 /* PostsView.swift in Sources */,
 				BE3456BB297432E1005A1B19 /* RegisterView.swift in Sources */,
+				BEC2E18829752E7B00A2A5C2 /* PostCardView.swift in Sources */,
 				BE3456B729742B52005A1B19 /* LoadingView.swift in Sources */,
 				BE34569529740E8B005A1B19 /* WisherApp.swift in Sources */,
+				BEC2E18C29753E9A00A2A5C2 /* SearchUserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
