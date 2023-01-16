@@ -9,10 +9,12 @@ import SwiftUI
 import FirebaseFirestore
 
 struct SearchUserView: View {
+    
     // MARK: View Properties
     @State private var fetchedUsers: [User] = []
     @State private var searchText: String = ""
     @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
 
         List {

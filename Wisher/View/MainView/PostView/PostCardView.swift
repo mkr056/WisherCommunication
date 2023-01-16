@@ -64,7 +64,7 @@ struct PostCardView: View {
                     Image(systemName: "ellipsis")
                         .font(.caption)
                         .rotationEffect(.init(degrees: -90))
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                         .padding(8)
                         .contentShape(Rectangle())
                 }
@@ -122,7 +122,7 @@ struct PostCardView: View {
                 .foregroundColor(.gray)
 
         }
-        .foregroundColor(.black)
+        .foregroundColor(.primary)
         .padding(.vertical, 8)
     }
     

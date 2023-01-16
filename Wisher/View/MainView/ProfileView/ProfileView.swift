@@ -50,7 +50,7 @@ struct ProfileView: View {
                     } label: {
                         Image(systemName: "ellipsis")
                             .rotationEffect(.init(degrees: 90))
-                            .tint(.black)
+                            .tint(.primary)
                             .scaleEffect(0.8)
                     }
                 }

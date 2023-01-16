@@ -31,11 +31,11 @@ struct LoginView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            Text("Lets Sign you in")
+            Text("Sign in")
                 .font(.largeTitle.bold())
                 .hAlign(.leading)
             
-            Text("Welcome Back,\nYou have been missed")
+            Text("Welcome Back!")
                 .font(.title3)
                 .hAlign(.leading)
             
@@ -52,15 +52,15 @@ struct LoginView: View {
                 Button("Reset password?", action: resetPassword)
                     .font(.callout)
                     .fontWeight(.medium)
-                    .tint(.black)
+                    .tint(.primary)
                     .hAlign(.trailing)
                 
                 Button(action: loginUser) {
                     // MARK: Login Button
                     Text("Sign in")
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                         .hAlign(.center)
-                        .fillView(.black)
+                        .fillView(.secondary)
                 }
                 .padding(.top, 10)
             }
@@ -73,7 +73,7 @@ struct LoginView: View {
                     createAccount.toggle()
                 }
                 .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
             }
             .font(.callout)
             .vAlign(.bottom)

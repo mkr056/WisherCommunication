@@ -49,7 +49,7 @@ struct ReusableProfileContent: View {
                 Text("Posts")
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
                     .hAlign(.leading)
                     .padding(.vertical, 15)
                 

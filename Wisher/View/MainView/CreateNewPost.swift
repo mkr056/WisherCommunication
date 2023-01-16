@@ -43,17 +43,17 @@ struct CreateNewPost: View {
                 } label: {
                     Text("Cancel")
                         .font(.callout)
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                 }
                 .hAlign(.leading)
                 
                 Button(action: createPost) {
                     Text("Post")
                         .font(.callout)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 6)
-                        .background(.black, in: Capsule())
+                        .background(.secondary, in: Capsule())
                 }
                 .disableWithOpacity(postText.isEmpty)
 
@@ -115,7 +115,7 @@ struct CreateNewPost: View {
                 }
 
             }
-            .foregroundColor(.black)
+            .foregroundColor(.primary)
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
         }

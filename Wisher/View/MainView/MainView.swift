@@ -24,7 +24,7 @@ struct MainView: View {
                 }
         }
         // MARK: Changing Tab Label Tint to Black
-        .tint(.black)
+        .tint(.primary)
     }
 }
 

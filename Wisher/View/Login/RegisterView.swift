@@ -38,13 +38,13 @@ struct RegisterView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            Text("Lets Register\nAccount")
+            Text("Register Account")
                 .font(.largeTitle.bold())
                 .hAlign(.leading)
             
-            Text("Hello user, have a wonderful journey")
-                .font(.title3)
-                .hAlign(.leading)
+//            Text("Hello user, have a wonderful journey")
+//                .font(.title3)
+//                .hAlign(.leading)
             
             // MARK: For Smaller Size Optimization
             ViewThatFits {
@@ -64,7 +64,7 @@ struct RegisterView: View {
                     dismiss()
                 }
                 .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
             }
             .font(.callout)
             .vAlign(.bottom)
@@ -148,9 +148,9 @@ struct RegisterView: View {
             Button(action: registerUser) {
                 // MARK: Login Button
                 Text("Sign up")
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .hAlign(.center)
-                    .fillView(.black)
+                    .fillView(.primary)
             }
             .disableWithOpacity(userName.isEmpty || userBio.isEmpty || email.isEmpty || password.isEmpty || userProfilePicData == nil)
             .padding(.top, 10)

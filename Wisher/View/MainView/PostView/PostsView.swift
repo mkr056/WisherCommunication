@@ -21,9 +21,9 @@ struct PostsView: View {
                         Image(systemName: "plus")
                             .font(.title3)
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .padding(13)
-                            .background(.black, in: Circle())
+                            .background(.secondary, in: Circle())
                     }
                     .padding(15)
                 }
@@ -33,7 +33,7 @@ struct PostsView: View {
                             SearchUserView()
                         } label: {
                             Image(systemName: "magnifyingglass")
-                                .tint(.black)
+                                .tint(.primary)
                                 .scaleEffect(0.9)
                         }
 
