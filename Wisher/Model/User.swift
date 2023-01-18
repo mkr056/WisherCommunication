@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseFirestoreSwift
 
+// MARK: User Firestore Object
 struct User: Identifiable, Codable {
     @DocumentID var id: String?
     var username: String

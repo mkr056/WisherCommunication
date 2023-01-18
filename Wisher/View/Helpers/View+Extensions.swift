@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: View Extensions For UI Building
 extension View {
     
-    // MARK: Closing All Active Keyboards
+    // MARK: Closing All Active Keyboards. When the Sign In or Sign Up buttons are pressed, the active keyboard is closed
     func closeKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }

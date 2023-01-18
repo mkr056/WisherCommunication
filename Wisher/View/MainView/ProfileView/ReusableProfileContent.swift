@@ -8,9 +8,10 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+// Why? Since our app contains a search user feature, making this component reusable will avoid more redundant codes and also make it easy to display user details simply with a User Model Object
 struct ReusableProfileContent: View {
-    var user: User
-    @State private var fetchedPosts: [Post] = []
+    var user: User // the user for which to display all the relevant data
+    @State private var fetchedPosts: [Post] = [] // stores all the posts to show in the profile for a given user
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
@@ -53,7 +54,7 @@ struct ReusableProfileContent: View {
                     .hAlign(.leading)
                     .padding(.vertical, 15)
                 
-                ReusablePostsView(basedOnUID: true, uid: user.userUID, posts: $fetchedPosts)
+                ReusablePostsView(basedOnUID: true, uid: user.userUID, posts: $fetchedPosts) // this is why we created ReusablePostView, so that when you pass the user uid, is simply fetches all the posts associated with the user UID, avoiding redundancy codes
                 
             }
             .padding(15)

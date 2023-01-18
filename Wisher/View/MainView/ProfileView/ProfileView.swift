@@ -13,13 +13,13 @@ import FirebaseFirestore
 struct ProfileView: View {
     
     // MARK: My Profile Data
-    @State private var myProfile: User?
-    @AppStorage("log_status") var logStatus: Bool = false
+    @State private var myProfile: User? // storing the user object (and info) for currently signed in user
+    @AppStorage("log_status") var logStatus: Bool = false // getting the current logStatus of the current user
     
     // MARK: View Properties
-    @State private var showError = false
-    @State private var errorMessage: String = ""
-    @State private var isLoading: Bool = false
+    @State private var showError = false // for triggering an error alert
+    @State private var errorMessage: String = "" // for storing error message in the alert
+    @State private var isLoading: Bool = false // for triggering Loading View
     
     var body: some View {
         NavigationStack {
@@ -63,8 +63,8 @@ struct ProfileView: View {
             
         }
         .task {
-            // This Modifier is like onAppear
-            // So Fetching for the First Time Only
+            // This Modifier is like onAppear, so Fetching for the First Time Only.
+            // Since Task is an alternative to onAppear, which is an async call, whenever the tab is changed and reopened, it will be called like onAppear. That's why we're limiting it to the initial fetch (First time).
             if myProfile != nil { return }
             
             // MARK: Initial Fetch
@@ -94,12 +94,12 @@ struct ProfileView: View {
         Task {
             do {
                 guard let userUID = Auth.auth().currentUser?.uid else { return }
-                // Step 1: First Deleting Profile Image From Storage
+                // Step 1: First Deleting Profile Image From Storage.
                 let reference = Storage.storage().reference().child("Profile_Images").child(userUID)
                 try await reference.delete()
-                // Step 2: Deleting Firestore User Document
+                // Step 2: Deleting Firestore User Document.
                 try await Firestore.firestore().collection("Users").document(userUID).delete()
-                // Step 3: Deleting Auth Account and Setting Log Status to False
+                // Step 3: Deleting Auth Account and Setting Log Status to False.
                 try await Auth.auth().currentUser?.delete()
                 logStatus = false
             } catch {

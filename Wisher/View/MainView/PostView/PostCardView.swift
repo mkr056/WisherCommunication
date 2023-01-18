@@ -11,12 +11,12 @@ import Firebase
 import FirebaseStorage
 
 struct PostCardView: View {
-    var post: Post
+    var post: Post // post for which information has to be displayed
     // MARK: Callbacks
-    var onUpdate: (Post) -> ()
+    var onUpdate: (Post) -> () // action to be run on post when interaction happened
     var onDelete: () -> ()
     // MARK: View Properties
-    @AppStorage("user_UID") private var userUID: String = ""
+    @AppStorage("user_UID") private var userUID: String = "" // getting the current user's UID
     @State private var docListener: ListenerRegistration? // for live updates
     
     
@@ -74,7 +74,7 @@ struct PostCardView: View {
         })
         .onAppear {
             // MARK: Adding Only Once
-            if docListener == nil {
+            if docListener == nil { // when the post is visible on the screen, the document listener is added: otherwise, the listener is removed. Since we used LazyVStack earlier, onAppear() and onDisappear() will be called when the view enters or leaves the screen, respectively
                 guard let postID = post.id else { return }
                 docListener = Firestore.firestore().collection("Posts").document(postID).addSnapshotListener({ snapshot, error in
                     if let snapshot {
@@ -92,7 +92,7 @@ struct PostCardView: View {
                 })
             }
         }
-        .onDisappear {
+        .onDisappear { // as live updates are only provided when the post is shown on the screen, we can lower the cost of the document reads
             // MARK: Applying Snapshot Listener Only When the Post is Available on the Screen. Else Removing the Listener (it saves unwanted live updates from the posts which were swiped away from the screen)
             if let docListener {
                 docListener.remove()
@@ -105,7 +105,7 @@ struct PostCardView: View {
     func PostInteraction() -> some View {
         HStack(spacing: 6) {
             Button(action: likePost) {
-                Image(systemName: post.likedIDs.contains(userUID) ? "hand.thumbsup.fill" : "hand.thumbsup")
+                Image(systemName: post.likedIDs.contains(userUID) ? "hand.thumbsup.fill" : "hand.thumbsup") // whenever it's either liked or disliked, we will add the user's UID to the post's liked/disliked array, and if the array contains the user's UID, then we will highlight the thumb to indicate that it's already been liked or disliked
             }
             
             Text("\(post.likedIDs.count)")
@@ -130,7 +130,7 @@ struct PostCardView: View {
     func likePost() {
         Task {
             guard let postID = post.id else { return }
-            if post.likedIDs.contains(userUID) {
+            if post.likedIDs.contains(userUID) { // remove the user's UID from the relevant array if the post has already received likes: if not, add the user's UID to the array. For example, if a user liked the post before disliking it, the UID must be moved from the liked array list to the disliked array list
                 // MARK: Removing User ID From the Array
                 try await Firestore.firestore().collection("Posts").document(postID).updateData([
                     "likedIDs": FieldValue.arrayRemove([userUID])
@@ -167,12 +167,12 @@ struct PostCardView: View {
     // MARK: Deleting Post
     func deletePost() {
         Task {
-            // Step 1: Delete Image from Firebase Storage if present
+            // Step 1: Delete Image from Firebase Storage if present.
             do {
                 if !post.imageReferenceID.isEmpty {
                     try await Storage.storage().reference().child("Post_Images").child(post.imageReferenceID).delete()
                 }
-                // Step 2: Delete Firestore Document
+                // Step 2: Delete Firestore Document.
                 guard let postID = post.id else { return }
                 try await Firestore.firestore().collection("Posts").document(postID).delete()
             } catch {

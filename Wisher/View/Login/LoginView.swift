@@ -10,17 +10,18 @@ import SwiftUI
 import FirebaseFirestore
 import FirebaseStorage
 
+// MARK: Building Login Page UI
 struct LoginView: View {
     
     // MARK: User Details
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @State private var email: String = "" // for email TextField
+    @State private var password: String = "" // for password TextField
     
     // MARK: View Properties
-    @State private var createAccount: Bool = false
-    @State private var showError: Bool = false
-    @State private var errorMessage: String = ""
-    @State private var isLoading: Bool = false
+    @State private var createAccount: Bool = false // for triggering register view as fullscreen cover
+    @State private var showError: Bool = false // for triggering an error alert
+    @State private var errorMessage: String = "" // for storing error message in the alert
+    @State private var isLoading: Bool = false // for triggering Loading View
     
     //MARK: UserDefaults
     @AppStorage("user_profile_url") var profileURL: URL?
@@ -46,7 +47,7 @@ struct LoginView: View {
                     .padding(.top, 25)
                 
                 SecureField("Password", text: $password)
-                    .textContentType(.emailAddress)
+                    .textContentType(.password)
                     .border(1, .gray.opacity(0.5))
                 
                 Button("Reset password?", action: resetPassword)
@@ -63,6 +64,7 @@ struct LoginView: View {
                         .fillView(.secondary)
                 }
                 .padding(.top, 10)
+                .disableWithOpacity(email.isEmpty || password.isEmpty)
             }
             
             // MARK: Register Button
@@ -99,7 +101,7 @@ struct LoginView: View {
         closeKeyboard()
         Task {
             do {
-                // With the help of Swift Concurrency Auth can be done with Single Line
+                // With the help of Swift Concurrency Auth can be done with Single Line.
                 try await Auth.auth().signIn(withEmail: email, password: password)
                 print("User Found")
                 try await fetchUser()
@@ -115,7 +117,7 @@ struct LoginView: View {
         let user = try await Firestore.firestore().collection("Users").document(userID).getDocument(as: User.self)
         // MARK: UI Updating Must be Run On Main Thread
         await MainActor.run(body: {
-            // Setting UserDefaults data and Changing App's Auth Status
+            // Setting UserDefaults data and Changing App's Auth Status.
             userUID = userID
             userNameStored = user.username
             profileURL = user.userProfileURL
@@ -127,7 +129,7 @@ struct LoginView: View {
     func resetPassword() {
         Task {
             do {
-                // With the help of Swift Concurrency Auth can be done with Single Line
+                // With the help of Swift Concurrency Auth can be done with Single Line.
                 try await Auth.auth().sendPasswordReset(withEmail: email)
                 print("Link Sent")
             } catch {

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PostsView: View {
-    @State private var recentPosts: [Post] = []
-    @State private var createNewPost: Bool = false
+    @State private var recentPosts: [Post] = [] // these posts get passed in to the reusable posts view for it to display
+    @State private var createNewPost: Bool = false // for triggering create new post view as fullscreen cover
     var body: some View {
         NavigationStack {
             ReusablePostsView(posts: $recentPosts)

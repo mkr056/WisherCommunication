@@ -11,6 +11,7 @@ import SwiftUI
 @main
 struct WisherApp: App {
     
+    // MARK: Initializing Firebase
     init() {
         FirebaseApp.configure()
     }

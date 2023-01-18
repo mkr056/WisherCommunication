@@ -16,8 +16,8 @@ struct CreateNewPost: View {
     var onPost: (Post) -> ()
     
     /// - Post Properties
-    @State private var postText: String = ""
-    @State private var postImageData: Data?
+    @State private var postText: String = "" // for post content TextField
+    @State private var postImageData: Data? // for post image
     
     /// - Stored User Data From UserDefaults(AppStorage)
     @AppStorage("user_profile_url") private var profileURL: URL?
@@ -25,13 +25,13 @@ struct CreateNewPost: View {
     @AppStorage("user_UID") private var userUID: String = ""
     
     /// - View Properties
-    @Environment(\.dismiss) private var dismiss
-    @State private var isLoading: Bool = false
-    @State private var showError: Bool = false
-    @State private var errorMessage: String = ""
-    @State private var showImagePicker: Bool = false
-    @State private var photoItem: PhotosPickerItem?
-    @FocusState private var showKeyboard: Bool
+    @Environment(\.dismiss) private var dismiss // dismiss current sheet after clicking cancel or post buttons
+    @State private var isLoading: Bool = false // for triggering Loading View
+    @State private var showError: Bool = false // for triggering an error alert
+    @State private var errorMessage: String = "" // for storing error message in the alert
+    @State private var showImagePicker: Bool = false // for triggering photo gallery as a sheet
+    @State private var photoItem: PhotosPickerItem? // for storing the selected image
+    @FocusState private var showKeyboard: Bool // for hiding the keyboard when post or done buttons are clicked
     
     var body: some View {
         VStack {
@@ -94,6 +94,8 @@ struct CreateNewPost: View {
                         }
                         .clipped()
                         .frame(height: 220)
+                        // zIndex fixes the bug of geometry reader getting on top of the textfield when the image is added before typing the title
+                        .zIndex(-1)
                     }
                     
                 }
@@ -120,11 +122,11 @@ struct CreateNewPost: View {
             .padding(.vertical, 10)
         }
         .vAlign(.top)
-        .photosPicker(isPresented: $showImagePicker, selection: $photoItem)
+        .photosPicker(isPresented: $showImagePicker, selection: $photoItem, matching: .images)
         .onChange(of: photoItem) { newValue in
             if let newValue {
                 Task {
-                    if let rawImageData = try? await newValue.loadTransferable(type: Data.self), let image = UIImage(data: rawImageData), let compressedImageData = image.jpegData(compressionQuality: 0.5) {
+                    if let rawImageData = try? await newValue.loadTransferable(type: Data.self), let image = UIImage(data: rawImageData), let compressedImageData = image.jpegData(compressionQuality: 0.5) { // compressing images so that we can save storage space. Compression is purely your idea: you can also choose to upload the raw image as well
                         /// - UI Must be done on Main Thread
                         await MainActor.run(body: {
                             postImageData = compressedImageData
@@ -149,7 +151,7 @@ struct CreateNewPost: View {
         Task {
             do {
                 guard let profileURL = profileURL else { return }
-                // Step 1: Uploading Image If any
+                // Step 1: Uploading Image If any.
                 // Used to delete the Post
                 let imageReferenceID = "\(userUID)\(Date())"
                 let storageReference = Storage.storage().reference().child("Post_Images").child(imageReferenceID)
@@ -157,11 +159,11 @@ struct CreateNewPost: View {
                     let _ = try await storageReference.putDataAsync(postImageData)
                     let downloadURL = try await storageReference.downloadURL()
                     
-                    // Step 3: Create Post Object With Image Id and URL
+                    // Step 3: Create Post Object With Image Id and URL.
                     let post = Post(text: postText, imageURL: downloadURL, imageReferenceID: imageReferenceID, userName: userName, userUID: userUID, userProfileURL: profileURL)
                     try await createDocumentAtFirebase(post)
                 } else {
-                    // Step 2: Directly Post Text Data to Firebase (Since there is no Images Present)
+                    // Step 2: Directly Post Text Data to Firebase (Since there is no Images Present).
                     let post = Post(text: postText, userName: userName, userUID: userUID, userProfileURL: profileURL)
                     try await createDocumentAtFirebase(post)
                 }

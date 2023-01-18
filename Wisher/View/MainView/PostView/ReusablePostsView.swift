@@ -8,12 +8,12 @@
 import SwiftUI
 import Firebase
 
-struct ReusablePostsView: View {
-    var basedOnUID: Bool = false
-    var uid: String = ""
-    @Binding var posts: [Post]
+struct ReusablePostsView: View { // why Reusable: We need to display the current user's posts on the profile screen, and we also need to display that user's posts when searching for another user. By making it a reusable component, we can easily remove lost of redundant codes
+    var basedOnUID: Bool = false // to track whether this view is presented on the feed or after performing a search in the user profile
+    var uid: String = "" // get the user UID to show relevant posts in the account feed
+    @Binding var posts: [Post] // this property receives the posts from the 'recentPosts' variable of the main(wrapper) view to display and also modifies them sending back the changes
     // MARK: View Properties
-    @State private var isFetching: Bool = true
+    @State private var isFetching: Bool = true // for triggering Progress View
     
     // MARK: Pagination
     @State private var paginationDoc: QueryDocumentSnapshot?
@@ -21,7 +21,7 @@ struct ReusablePostsView: View {
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack {
+            LazyVStack { // by using LazyVStack, it removes the contents when it's moved out of the screen, allowing us to use onAppear() and onDisappear() to get notified when it's actually entering/leaving the screen
                 if isFetching {
                     ProgressView()
                         .padding(.top, 30)
@@ -48,7 +48,7 @@ struct ReusablePostsView: View {
             isFetching = true
             posts.removeAll(keepingCapacity: true)
             // MARK: Reseting Pagination Doc
-            paginationDoc = nil
+            paginationDoc = nil // we must set paginationDoc to nil when the user refreshes the posts since the user's refresh will begin with the most recently written posts and if the pagination doc hasn't been updated, will get the most recent documents
             
             await fetchPosts()
         }
@@ -82,7 +82,7 @@ struct ReusablePostsView: View {
             }
             .onAppear {
                 // MARK: When Last Post Appears, Fetching New Post (If there is one)
-                if post.id == posts.last?.id && paginationDoc != nil {
+                if post.id == posts.last?.id && paginationDoc != nil { // why check pagination document isn't nil? Consider that there are 40 posts total, and that the initial fetch fetched 20 posts, with the pagination document being the 20th post, and that when the last post appears, it fetches the next set of 20 posts, with the pagination document being the 40th post. When it tries to fetch another set of 20 posts, it will be empty because there are no more posts available, so paginationDoc will be nil and it will no longer try to fetch the posts
                     Task { await fetchPosts() }
                 }
             }
@@ -110,7 +110,7 @@ struct ReusablePostsView: View {
             }
             
             // MARK: New Query For UID Based Document Fetch. Simply Filter the Posts that do not belong to this UID
-            if basedOnUID {
+            if basedOnUID { // check whether to fetch the recent posts or posts for a given user UID
                 query = query
                     .whereField("userUID", isEqualTo: uid)
             }
@@ -122,7 +122,7 @@ struct ReusablePostsView: View {
             }
             await MainActor.run(body: {
                 posts.append(contentsOf: fetchedPosts)
-                paginationDoc = docs.documents.last
+                paginationDoc = docs.documents.last // saving the last fetched document so that it can be used for pagination in the Firebase Firestore
                 isFetching = false
             })
         } catch {

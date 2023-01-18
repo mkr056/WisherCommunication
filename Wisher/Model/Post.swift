@@ -12,14 +12,23 @@ import FirebaseFirestoreSwift
 
 struct Post: Identifiable, Codable, Equatable, Hashable {
     @DocumentID var id: String?
+    
+    // Post content
     var text: String
+    
+    // Post image url (if uploaded)
     var imageURL: URL?
+    
+    // Image reference ID (Used for Deletion)
     var imageReferenceID: String = ""
+    
     var publishedDate: Date = Date()
+    
+    // People's user IDs who liked or disliked
     var likedIDs: [String] = []
     var dislikedIDs: [String] = []
     
-    // MARK: Basic User Info
+    // Post Author's basic info (for Post View)
     var userName: String
     var userUID: String
     var userProfileURL: URL
