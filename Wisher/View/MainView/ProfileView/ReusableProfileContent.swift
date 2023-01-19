@@ -62,3 +62,9 @@ struct ReusableProfileContent: View {
     }
 }
 
+
+struct ReusableProfileContent_Previews: PreviewProvider {
+    static var previews: some View {
+        ReusableProfileContent(user: User(username: "test", userBio: "just testing", userBioLink: "https://www.google.com/", userUID: "321321321", userEmail: "testing@gmail.com", userProfileURL: URL(string: "https://www.google.com/")!))
+    }
+}

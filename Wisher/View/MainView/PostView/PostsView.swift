@@ -8,25 +8,25 @@
 import SwiftUI
 
 struct PostsView: View {
-    @State private var recentPosts: [Post] = [] // these posts get passed in to the reusable posts view for it to display
+    @Binding var recentPosts: [Post] // these posts are retrieved from Main View and then get passed in to the reusable posts view for it to display
     @State private var createNewPost: Bool = false // for triggering create new post view as fullscreen cover
     var body: some View {
         NavigationStack {
             ReusablePostsView(posts: $recentPosts)
                 .hAlign(.center).vAlign(.center)
-                .overlay(alignment: .bottomTrailing) {
-                    Button {
-                        createNewPost.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.primary)
-                            .padding(13)
-                            .background(.secondary, in: Circle())
-                    }
-                    .padding(15)
-                }
+//                .overlay(alignment: .bottomTrailing) {
+//                    Button {
+//                        createNewPost.toggle()
+//                    } label: {
+//                        Image(systemName: "plus")
+//                            .font(.title3)
+//                            .fontWeight(.semibold)
+//                            .foregroundColor(.primary)
+//                            .padding(13)
+//                            .background(.secondary, in: Circle())
+//                    }
+//                    .padding(15)
+//                }
                 .toolbar(content: {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink {
@@ -52,6 +52,6 @@ struct PostsView: View {
 
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
-        PostsView()
+        PostsView(recentPosts: .constant([]))
     }
 }

@@ -121,6 +121,9 @@ struct CreateNewPost: View {
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
         }
+        .onAppear {
+            showKeyboard = true
+        }
         .vAlign(.top)
         .photosPicker(isPresented: $showImagePicker, selection: $photoItem, matching: .images)
         .onChange(of: photoItem) { newValue in

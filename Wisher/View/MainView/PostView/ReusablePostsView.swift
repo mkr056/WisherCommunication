@@ -11,7 +11,7 @@ import Firebase
 struct ReusablePostsView: View { // why Reusable: We need to display the current user's posts on the profile screen, and we also need to display that user's posts when searching for another user. By making it a reusable component, we can easily remove lost of redundant codes
     var basedOnUID: Bool = false // to track whether this view is presented on the feed or after performing a search in the user profile
     var uid: String = "" // get the user UID to show relevant posts in the account feed
-    @Binding var posts: [Post] // this property receives the posts from the 'recentPosts' variable of the main(wrapper) view to display and also modifies them sending back the changes
+    @Binding var posts: [Post] // this property receives the posts from the 'recentPosts' variable of the main(wrapper) view to display and also modifies them sending back the changes. This variable contains the results of fetching and passes the results to parent(wrapper) views
     // MARK: View Properties
     @State private var isFetching: Bool = true // for triggering Progress View
     
