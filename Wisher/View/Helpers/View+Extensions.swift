@@ -44,10 +44,10 @@ extension View {
     }
     
     // MARK: Custom Fill View With Padding
-    func fillView(_ color: Color) -> some View {
+    func fillView(_ color: Color, hPadding: CGFloat = 15, vPadding: CGFloat = 10) -> some View {
         self
-            .padding(.horizontal, 15)
-            .padding(.vertical, 10)
+            .padding(.horizontal, hPadding)
+            .padding(.vertical, vPadding)
             .background {
                 RoundedRectangle(cornerRadius: 5, style: .continuous)
                     .fill(color)

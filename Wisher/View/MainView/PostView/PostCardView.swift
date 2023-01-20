@@ -19,7 +19,9 @@ struct PostCardView: View {
     @AppStorage("user_UID") private var userUID: String = "" // getting the current user's UID
     @State private var docListener: ListenerRegistration? // for live updates
     
-    
+    @State private var userProfileToShow: User? // for storing the user based on the tapped post, whose profile will be shown
+    @State private var showUserProfile: Bool = false // for triggering navigation link (showing selected user's profile)
+
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             WebImage(url: post.userProfileURL)
@@ -27,11 +29,23 @@ struct PostCardView: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 35, height: 35)
                 .clipShape(Circle())
+                .onTapGesture {
+                    Task {
+                        await getUserProfileToShow()
+                    }
+                    showUserProfile.toggle()
+                }
             
             VStack(alignment: .leading, spacing: 6) {
-                Text(post.userName)
-                    .font(.callout)
-                    .fontWeight(.semibold)
+                    Text(post.userName)
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                        .onTapGesture {
+                            Task {
+                                await getUserProfileToShow()
+                            }
+                            showUserProfile.toggle()
+                        }
                 Text(post.publishedDate.formatted(date: .numeric, time: .shortened))
                     .font(.caption2)
                     .foregroundColor(.gray)
@@ -97,6 +111,11 @@ struct PostCardView: View {
             if let docListener {
                 docListener.remove()
                 self.docListener = nil
+            }
+        }
+        .navigationDestination(isPresented: $showUserProfile) {
+            if let userProfileToShow {
+                ReusableProfileContent(user: userProfileToShow)
             }
         }
     }
@@ -179,5 +198,12 @@ struct PostCardView: View {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func getUserProfileToShow() async {
+        guard let user = try? await Firestore.firestore().collection("Users").document(post.userUID).getDocument(as: User.self) else { return }
+        userProfileToShow = user
+        
+        
     }
 }

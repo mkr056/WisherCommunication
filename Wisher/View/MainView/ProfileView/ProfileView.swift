@@ -35,12 +35,10 @@ struct ProfileView: View {
                     ProgressView()
                 }
             }
-
-            .navigationTitle("My Profile")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                         // MARK: Two Actions
+                        // MARK: Two Actions
                         // 1. Logout
                         // 2. Delete Account
                         Button("Logout", action: logOutUser)

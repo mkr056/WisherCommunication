@@ -13,7 +13,7 @@ struct ReusablePostsView: View { // why Reusable: We need to display the current
     var uid: String = "" // get the user UID to show relevant posts in the account feed
     @Binding var posts: [Post] // this property receives the posts from the 'recentPosts' variable of the main(wrapper) view to display and also modifies them sending back the changes. This variable contains the results of fetching and passes the results to parent(wrapper) views
     // MARK: View Properties
-    @State private var isFetching: Bool = true // for triggering Progress View
+    @State private var isFetching: Bool = false // for triggering Progress View
     
     // MARK: Pagination
     @State private var paginationDoc: QueryDocumentSnapshot?
@@ -55,6 +55,7 @@ struct ReusablePostsView: View { // why Reusable: We need to display the current
         .task {
             // MARK: Fetching For One Time
             guard posts.isEmpty else { return }
+            isFetching = true
             await fetchPosts()
             
         }
