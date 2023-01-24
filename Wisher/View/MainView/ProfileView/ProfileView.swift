@@ -41,9 +41,25 @@ struct ProfileView: View {
                         // MARK: Two Actions
                         // 1. Logout
                         // 2. Delete Account
-                        Button("Logout", action: logOutUser)
+                        Section {
+                            Button("Logout", action: logOutUser)
+                            
+                            Button("Delete Account", role: .destructive, action: deleteAccount)
+                        }
                         
-                        Button("Delete Account", role: .destructive, action: deleteAccount)
+                        Button("Settings", action: {})
+                        
+                        Button("Edit profile", action: {})
+                        
+                        Button("Archive", action: {})
+                        
+                        Button("Copy link", action: {})
+                        
+                        Button("Share profile", action: {})
+                        
+                        Button("Logout", action: {})
+                        
+                        
                         
                     } label: {
                         Image(systemName: "ellipsis")

@@ -9,16 +9,18 @@ import SwiftUI
 
 struct PostsView: View {
     @Binding var recentPosts: [Post] // these posts are retrieved from Main View and then get passed in to the reusable posts view for it to display
+    @Binding var recommendationPosts: [Post] // these posts are retrieved from Main View and then get passed in to the reusable posts view for it to display
+
     let feedOptions: [String] = ["Following", "Recommendations"] // Options for the segmented control
     @State private var feedSelected: String = "Following" // for tracking currently selected option
     var body: some View {
         NavigationStack {
             Group {
                 if feedSelected == "Following" {
-                    ReusablePostsView(posts: $recentPosts)
+                    ReusablePostsView(feedPosts: $recentPosts)
                         .hAlign(.center).vAlign(.center)
                 } else {
-                    ReusablePostsView(posts: .constant([]))
+                    RecommendationsFeed(recommendationPosts: $recommendationPosts)
                         .hAlign(.center).vAlign(.center)
                 }
             }
@@ -63,6 +65,6 @@ struct PostsView: View {
 
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
-        PostsView(recentPosts: .constant([]))
+        PostsView(recentPosts: .constant([]), recommendationPosts: .constant([]))
     }
 }

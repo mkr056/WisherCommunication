@@ -14,6 +14,7 @@ struct MainView: View {
     let tabBarImageNames = ["rectangle.portrait.on.rectangle.portrait.angled", "plus.circle.fill", "gear"]
     @State private var createNewPost: Bool = false
     @State private var recentPosts: [Post] = [] // these posts get passed in to the PostsView posts view for it to send to ReusablePostView where they are being presented. All the changes applied are pushed back to this view, therefore are being updated. This functionality proves the feature of updating feed when post is added.
+    @State private var recommendationPosts: [Post] = []
 
 
     var body: some View {
@@ -22,7 +23,7 @@ struct MainView: View {
             ZStack {
                 switch selectedIndex {
                 case 0:
-                    PostsView(recentPosts: $recentPosts)
+                    PostsView(recentPosts: $recentPosts, recommendationPosts: $recommendationPosts)
 
                 case 2:
                     ProfileView()

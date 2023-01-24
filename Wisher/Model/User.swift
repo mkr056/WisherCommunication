@@ -17,9 +17,11 @@ struct User: Identifiable, Codable {
     var userUID: String
     var userEmail: String
     var userProfileURL: URL
+    var followerIDs: [String] = []
+    var followingIDs: [String] = []
 
     enum CodingKeys: CodingKey {
-        case id, username, userBio, userBioLink, userUID, userEmail, userProfileURL
+        case id, username, userBio, userBioLink, userUID, userEmail, userProfileURL, followerIDs, followingIDs
     }
 }
 

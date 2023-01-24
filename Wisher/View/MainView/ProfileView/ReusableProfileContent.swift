@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseAuth
 import SDWebImageSwiftUI
+import FirebaseFirestore
 
 // Why? Since our app contains a search user feature, making this component reusable will avoid more redundant codes and also make it easy to display user details simply with a User Model Object
 struct ReusableProfileContent: View {
@@ -15,9 +16,12 @@ struct ReusableProfileContent: View {
     @State private var fetchedPosts: [Post] = [] // stores all the posts to show in the profile for a given user
     @State private var createNewPost: Bool = false // for triggering create new post view as fullscreen cover
     
+    var userUID: String = UserDefaults.standard.string(forKey: "user_UID") ?? "" // getting the current user's UID
     var profileOfSelf: Bool {
-        UserDefaults.standard.string(forKey: "user_UID") == user.userUID // checking whether the current use is watching his own profile or someone else's. Changing the UI respectively
+        userUID == user.userUID // checking whether the current use is watching his own profile or someone else's. Changing the UI respectively
     }
+    
+    @State private var buttonText: String = ""
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -39,7 +43,7 @@ struct ReusableProfileContent: View {
                                 // posts
                             } label: {
                                 VStack(alignment: .center) {
-                                    Text("12")
+                                    Text("\(fetchedPosts.count)")
                                     Text("Posts")
                                 }
                             }
@@ -48,7 +52,7 @@ struct ReusableProfileContent: View {
                                 // followers
                             } label: {
                                 VStack(alignment: .center) {
-                                    Text("52")
+                                    Text("\(user.followerIDs.count)")
                                     Text("Followers")
                                 }
                             }
@@ -57,7 +61,7 @@ struct ReusableProfileContent: View {
                                 // following
                             } label: {
                                 VStack(alignment: .center) {
-                                    Text("932")
+                                    Text("\(user.followingIDs.count)")
                                     Text("Following")
                                 }
                             }
@@ -89,10 +93,16 @@ struct ReusableProfileContent: View {
                         }
                         
                         Button {
-                            createNewPost.toggle()
+                            if profileOfSelf {
+                                createNewPost.toggle()
+                            } else {
+                                followUser()
+                                getButtonText()
+
+                            }
 
                         } label: {
-                            Text(profileOfSelf ? "Add new post" : "Follow")
+                            Text(profileOfSelf ? "Add new post" : buttonText)
                                 .font(.headline)
                                 .foregroundColor(.primary)
                                 .hAlign(.center)
@@ -113,7 +123,7 @@ struct ReusableProfileContent: View {
                     .padding(.top, 10)
                     .padding(.bottom, 15)
                 
-                ReusablePostsView(basedOnUID: true, uid: user.userUID, posts: $fetchedPosts) // this is why we created ReusablePostView, so that when you pass the user uid, is simply fetches all the posts associated with the user UID, avoiding redundancy codes
+                ReusablePostsView(basedOnUID: true, uid: user.userUID, feedPosts: $fetchedPosts) // this is why we created ReusablePostView, so that when you pass the user uid, is simply fetches all the posts associated with the user UID, avoiding redundancy codes
                 
             }
             .padding(15)
@@ -132,6 +142,43 @@ struct ReusableProfileContent: View {
                         .foregroundColor(.primary)
                 }
             }
+        }
+        .onAppear {
+            buttonText = user.followerIDs.contains(userUID) ? "Unfollow" : "Follow"
+        }
+
+    }
+    
+    
+    func getButtonText() {
+        (buttonText == "Follow") ? (buttonText = "Unfollow") : (buttonText = "Follow")
+    }
+    
+
+    func followUser() {
+        Task {
+            guard let loggedInUser = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self) else { return }
+            if loggedInUser.followingIDs.contains(user.userUID) { // if the currently logged in user already has the chose user in the following list, then unfollow
+                // MARK: Removing User ID From the Array
+                try await Firestore.firestore().collection("Users").document(loggedInUser.userUID).updateData([
+                    "followingIDs": FieldValue.arrayRemove([user.userUID])
+                ])
+                
+                try await Firestore.firestore().collection("Users").document(user.userUID).updateData([
+                    "followerIDs": FieldValue.arrayRemove([loggedInUser.userUID])
+                ])
+            } else {
+                // MARK: Adding User ID To Liked Array and Removing our ID from Disliked Array (if Added in prior)
+                try await Firestore.firestore().collection("Users").document(loggedInUser.userUID).updateData([
+                    "followingIDs": FieldValue.arrayUnion([user.userUID])
+                ])
+                
+                try await Firestore.firestore().collection("Users").document(user.userUID).updateData([
+                    "followerIDs": FieldValue.arrayUnion([loggedInUser.userUID])
+                ])
+            }
+
+
         }
     }
 }

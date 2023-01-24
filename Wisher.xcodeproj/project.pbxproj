@@ -28,6 +28,7 @@
 		BE3456C929747211005A1B19 /* CreateNewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3456C829747211005A1B19 /* CreateNewPost.swift */; };
 		BE3456CB29747242005A1B19 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3456CA29747242005A1B19 /* Post.swift */; };
 		BE3456CD29747C4F005A1B19 /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3456CC29747C4F005A1B19 /* PostsView.swift */; };
+		BE690469297FCD920079FFB6 /* RecommendationsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE690468297FCD920079FFB6 /* RecommendationsFeed.swift */; };
 		BEC2E18629752A9200A2A5C2 /* ReusablePostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */; };
 		BEC2E18829752E7B00A2A5C2 /* PostCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */; };
 		BEC2E18C29753E9A00A2A5C2 /* SearchUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18B29753E9A00A2A5C2 /* SearchUserView.swift */; };
@@ -51,6 +52,7 @@
 		BE3456C829747211005A1B19 /* CreateNewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPost.swift; sourceTree = "<group>"; };
 		BE3456CA29747242005A1B19 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		BE3456CC29747C4F005A1B19 /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
+		BE690468297FCD920079FFB6 /* RecommendationsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationsFeed.swift; sourceTree = "<group>"; };
 		BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusablePostsView.swift; sourceTree = "<group>"; };
 		BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardView.swift; sourceTree = "<group>"; };
 		BEC2E18B29753E9A00A2A5C2 /* SearchUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserView.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 			children = (
 				BE3456CC29747C4F005A1B19 /* PostsView.swift */,
 				BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */,
+				BE690468297FCD920079FFB6 /* RecommendationsFeed.swift */,
 				BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */,
 			);
 			path = PostView;
@@ -276,6 +279,7 @@
 				BE3456AC29741235005A1B19 /* LoginView.swift in Sources */,
 				BE34569729740E8B005A1B19 /* ContentView.swift in Sources */,
 				BEC2E18629752A9200A2A5C2 /* ReusablePostsView.swift in Sources */,
+				BE690469297FCD920079FFB6 /* RecommendationsFeed.swift in Sources */,
 				BE3456BE29743356005A1B19 /* View+Extensions.swift in Sources */,
 				BE3456C929747211005A1B19 /* CreateNewPost.swift in Sources */,
 				BE3456CD29747C4F005A1B19 /* PostsView.swift in Sources */,
