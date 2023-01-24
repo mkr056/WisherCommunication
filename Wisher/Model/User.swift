@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestoreSwift
 
 // MARK: User Firestore Object
-struct User: Identifiable, Codable {
+struct User: Identifiable, Codable, Hashable {
     @DocumentID var id: String?
     var username: String
     var userBio: String

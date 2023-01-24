@@ -48,8 +48,8 @@ struct ReusableProfileContent: View {
                                 }
                             }
                             
-                            Button {
-                                // followers
+                            NavigationLink {
+                                FollowerFollowingListView(user: user, showFollowers: true)
                             } label: {
                                 VStack(alignment: .center) {
                                     Text("\(user.followerIDs.count)")
@@ -57,8 +57,8 @@ struct ReusableProfileContent: View {
                                 }
                             }
                             
-                            Button {
-                                // following
+                            NavigationLink {
+                                FollowerFollowingListView(user: user, showFollowers: false)
                             } label: {
                                 VStack(alignment: .center) {
                                     Text("\(user.followingIDs.count)")
