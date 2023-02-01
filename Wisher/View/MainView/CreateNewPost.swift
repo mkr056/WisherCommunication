@@ -16,7 +16,10 @@ struct CreateNewPost: View {
     var onPost: (Post) -> ()
     
     /// - Post Properties
+    @State private var postTitle: String = "" // for post title TextField
     @State private var postText: String = "" // for post content TextField
+    @State private var postURL: String = "" // for post title TextField
+
     @State private var postImageData: Data? // for post image
     
     /// - Stored User Data From UserDefaults(AppStorage)
@@ -55,7 +58,7 @@ struct CreateNewPost: View {
                         .padding(.vertical, 6)
                         .background(.secondary, in: Capsule())
                 }
-                .disableWithOpacity(postText.isEmpty)
+                .disableWithOpacity(postTitle.isEmpty)
 
             }
             .padding(.horizontal, 15)
@@ -65,6 +68,16 @@ struct CreateNewPost: View {
                     .fill(.gray.opacity(0.05))
                     .ignoresSafeArea()
             }
+            VStack {
+                Group {
+                    TextField("Wish title", text: $postTitle)
+                    TextField("URL (optional)", text: $postURL)
+                }
+                .padding(.bottom, 10)
+                .padding(.horizontal)
+            }
+            Divider()
+
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 15) {
                     TextField("What's happening?", text: $postText, axis: .vertical)
@@ -163,11 +176,11 @@ struct CreateNewPost: View {
                     let downloadURL = try await storageReference.downloadURL()
                     
                     // Step 3: Create Post Object With Image Id and URL.
-                    let post = Post(text: postText, imageURL: downloadURL, imageReferenceID: imageReferenceID, userName: userName, userUID: userUID, userProfileURL: profileURL)
+                    let post = Post(title: postTitle, url: postURL, text: postText, imageURL: downloadURL, imageReferenceID: imageReferenceID, userName: userName, userUID: userUID, userProfileURL: profileURL)
                     try await createDocumentAtFirebase(post)
                 } else {
                     // Step 2: Directly Post Text Data to Firebase (Since there is no Images Present).
-                    let post = Post(text: postText, userName: userName, userUID: userUID, userProfileURL: profileURL)
+                    let post = Post(title: postTitle, url: postURL, text: postText, userName: userName, userUID: userUID, userProfileURL: profileURL)
                     try await createDocumentAtFirebase(post)
                 }
             } catch {

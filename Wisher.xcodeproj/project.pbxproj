@@ -30,6 +30,8 @@
 		BE3456CD29747C4F005A1B19 /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3456CC29747C4F005A1B19 /* PostsView.swift */; };
 		BE3BF7C8298004B900BBB189 /* FollowerFollowingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3BF7C7298004B900BBB189 /* FollowerFollowingListView.swift */; };
 		BE690469297FCD920079FFB6 /* RecommendationsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE690468297FCD920079FFB6 /* RecommendationsFeed.swift */; };
+		BE751FAD2982B19000D89DD0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE751FAC2982B19000D89DD0 /* SettingsView.swift */; };
+		BE751FAF2982B7E600D89DD0 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE751FAE2982B7E600D89DD0 /* EditProfileView.swift */; };
 		BEC2E18629752A9200A2A5C2 /* ReusablePostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */; };
 		BEC2E18829752E7B00A2A5C2 /* PostCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */; };
 		BEC2E18C29753E9A00A2A5C2 /* SearchUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC2E18B29753E9A00A2A5C2 /* SearchUserView.swift */; };
@@ -55,6 +57,8 @@
 		BE3456CC29747C4F005A1B19 /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
 		BE3BF7C7298004B900BBB189 /* FollowerFollowingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FollowerFollowingListView.swift; path = Wisher/View/MainView/ProfileView/FollowerFollowingListView.swift; sourceTree = SOURCE_ROOT; };
 		BE690468297FCD920079FFB6 /* RecommendationsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationsFeed.swift; sourceTree = "<group>"; };
+		BE751FAC2982B19000D89DD0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BE751FAE2982B7E600D89DD0 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		BEC2E18529752A9200A2A5C2 /* ReusablePostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusablePostsView.swift; sourceTree = "<group>"; };
 		BEC2E18729752E7B00A2A5C2 /* PostCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardView.swift; sourceTree = "<group>"; };
 		BEC2E18B29753E9A00A2A5C2 /* SearchUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserView.swift; sourceTree = "<group>"; };
@@ -118,6 +122,7 @@
 		BE3456A929741210005A1B19 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BE751FAB2982B15100D89DD0 /* ProfileMenuItems */,
 				BE3456BC29743337005A1B19 /* Helpers */,
 				BE3456B9297432B9005A1B19 /* MainView */,
 				BE3456B8297432A7005A1B19 /* Login */,
@@ -169,6 +174,15 @@
 				BE3456BD29743356005A1B19 /* View+Extensions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BE751FAB2982B15100D89DD0 /* ProfileMenuItems */ = {
+			isa = PBXGroup;
+			children = (
+				BE751FAC2982B19000D89DD0 /* SettingsView.swift */,
+				BE751FAE2982B7E600D89DD0 /* EditProfileView.swift */,
+			);
+			path = ProfileMenuItems;
 			sourceTree = "<group>";
 		};
 		BEC2E18929753C3400A2A5C2 /* PostView */ = {
@@ -284,6 +298,7 @@
 				BEC2E18629752A9200A2A5C2 /* ReusablePostsView.swift in Sources */,
 				BE690469297FCD920079FFB6 /* RecommendationsFeed.swift in Sources */,
 				BE3456BE29743356005A1B19 /* View+Extensions.swift in Sources */,
+				BE751FAF2982B7E600D89DD0 /* EditProfileView.swift in Sources */,
 				BE3456C929747211005A1B19 /* CreateNewPost.swift in Sources */,
 				BE3456CD29747C4F005A1B19 /* PostsView.swift in Sources */,
 				BE3BF7C8298004B900BBB189 /* FollowerFollowingListView.swift in Sources */,
@@ -292,6 +307,7 @@
 				BE3456B729742B52005A1B19 /* LoadingView.swift in Sources */,
 				BE34569529740E8B005A1B19 /* WisherApp.swift in Sources */,
 				BEC2E18C29753E9A00A2A5C2 /* SearchUserView.swift in Sources */,
+				BE751FAD2982B19000D89DD0 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

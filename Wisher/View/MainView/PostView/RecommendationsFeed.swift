@@ -77,6 +77,8 @@ struct RecommendationsFeed: View { // this view is shown when the selected optio
                 }) {
                     recommendationPosts[index].likedIDs = updatedPost.likedIDs
                     recommendationPosts[index].dislikedIDs = updatedPost.dislikedIDs
+                    recommendationPosts[index].isReceived = updatedPost.isReceived
+
                 }
                 
             } onDelete: {
@@ -103,7 +105,7 @@ struct RecommendationsFeed: View { // this view is shown when the selected optio
         do {
             var query: Query!
             // MARK: Implementing Pagination
-            guard let user = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self), !user.followingIDs.isEmpty else {
+            guard let user = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self) else {
                 isFetching = false
                 return
                 

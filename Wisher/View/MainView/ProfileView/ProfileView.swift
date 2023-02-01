@@ -20,6 +20,8 @@ struct ProfileView: View {
     @State private var showError = false // for triggering an error alert
     @State private var errorMessage: String = "" // for storing error message in the alert
     @State private var isLoading: Bool = false // for triggering Loading View
+    @State private var shouldRefresh: Bool = false // determines whether profile view has to be refreshed due to changes made to the user data
+
     
     var body: some View {
         NavigationStack {
@@ -35,6 +37,12 @@ struct ProfileView: View {
                     ProgressView()
                 }
             }
+            .task {
+                if shouldRefresh { // if changes were made to user data, refresh
+                    myProfile = nil
+                    await fetchUserData()
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
@@ -47,9 +55,10 @@ struct ProfileView: View {
                             Button("Delete Account", role: .destructive, action: deleteAccount)
                         }
                         
-                        Button("Settings", action: {})
+                        NavigationLink { SettingsView() } label: { Text("Settings") }
+
                         
-                        Button("Edit profile", action: {})
+                        NavigationLink { EditProfileView(user: $myProfile, shouldRefresh: $shouldRefresh) } label: { Text("Edit profile") }
                         
                         Button("Archive", action: {})
                         

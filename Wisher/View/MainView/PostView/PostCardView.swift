@@ -21,7 +21,7 @@ struct PostCardView: View {
     
     @State private var userProfileToShow: User? // for storing the user based on the tapped post, whose profile will be shown
     @State private var showUserProfile: Bool = false // for triggering navigation link (showing selected user's profile)
-
+    
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             WebImage(url: post.userProfileURL)
@@ -37,21 +37,27 @@ struct PostCardView: View {
                 }
             
             VStack(alignment: .leading, spacing: 6) {
-                    Text(post.userName)
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                        .onTapGesture {
-                            Task {
-                                await getUserProfileToShow()
-                            }
-                            showUserProfile.toggle()
+                Text(post.userName)
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .onTapGesture {
+                        Task {
+                            await getUserProfileToShow()
                         }
+                        showUserProfile.toggle()
+                    }
                 Text(post.publishedDate.formatted(date: .numeric, time: .shortened))
                     .font(.caption2)
                     .foregroundColor(.gray)
-                Text(post.text)
-                    .textSelection(.enabled)
-                    .padding(.vertical, 8)
+                Group {
+                    if verifyUrl(urlString: post.url) {
+                        Link(post.title, destination: URL(string: post.url)!)
+                    } else {
+                        Text(post.title)
+                    }
+                }
+                .textSelection(.enabled)
+                .padding(.vertical, 8)
                 
                 // MARK: Post Image If Any
                 if let postImageURL = post.imageURL {
@@ -65,6 +71,12 @@ struct PostCardView: View {
                     }
                     .frame(height: 200)
                 }
+                
+                if !post.text.isEmpty{
+                    Text(post.text)
+                        .font(.footnote)
+                }
+                
                 PostInteraction()
             }
         }
@@ -74,6 +86,7 @@ struct PostCardView: View {
             if post.userUID == userUID {
                 Menu {
                     Button("Delete Post", role: .destructive, action: deletePost)
+                    Button(post.isReceived ? "Not received" : "Mark as received", action: changeReceiveStatus)
                 } label: {
                     Image(systemName: "ellipsis")
                         .font(.caption)
@@ -83,7 +96,13 @@ struct PostCardView: View {
                         .contentShape(Rectangle())
                 }
                 .offset(x: 8)
-
+                
+            } else {
+                if post.isReceived {
+                    Image(systemName: "checkmark.square.fill")
+                        .offset(x: 8)
+                }
+                
             }
         })
         .onAppear {
@@ -139,7 +158,7 @@ struct PostCardView: View {
             Text("\(post.dislikedIDs.count)")
                 .font(.caption)
                 .foregroundColor(.gray)
-
+            
         }
         .foregroundColor(.primary)
         .padding(.vertical, 8)
@@ -200,10 +219,28 @@ struct PostCardView: View {
         }
     }
     
+    func changeReceiveStatus() {
+        Task {
+            do {
+                guard let postID = post.id else { return }
+                try await Firestore.firestore().collection("Posts").document(postID).updateData(["isReceived": !post.isReceived])
+                
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     func getUserProfileToShow() async {
         guard let user = try? await Firestore.firestore().collection("Users").document(post.userUID).getDocument(as: User.self) else { return }
         userProfileToShow = user
+    }
+    
+    func verifyUrl (urlString: String) -> Bool {
+        if let url = URL(string: urlString) {
+            return UIApplication.shared.canOpenURL(url as URL)
+        }
         
-        
+        return false
     }
 }

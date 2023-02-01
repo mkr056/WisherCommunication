@@ -150,7 +150,7 @@ struct RegisterView: View {
                 Text("Sign up")
                     .foregroundColor(.primary)
                     .hAlign(.center)
-                    .fillView(.primary)
+                    .fillView(.secondary)
             }
             .disableWithOpacity(userName.isEmpty || userBio.isEmpty || email.isEmpty || password.isEmpty || userProfilePicData == nil)
             .padding(.top, 10)

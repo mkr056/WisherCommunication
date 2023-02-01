@@ -78,6 +78,7 @@ struct ReusablePostsView: View { // why Reusable: We need to display the current
                 }) {
                     feedPosts[index].likedIDs = updatedPost.likedIDs
                     feedPosts[index].dislikedIDs = updatedPost.dislikedIDs
+                    feedPosts[index].isReceived = updatedPost.isReceived
                 }
                 
             } onDelete: {
@@ -104,7 +105,7 @@ struct ReusablePostsView: View { // why Reusable: We need to display the current
         do {
             var query: Query!
             // MARK: Implementing Pagination
-            guard let user = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self), !user.followingIDs.isEmpty else {
+            guard let user = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self) else {
                 isFetching = false
                 return
                 
