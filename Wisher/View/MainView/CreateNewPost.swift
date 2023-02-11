@@ -11,15 +11,15 @@ import Firebase
 import FirebaseStorage
 
 struct CreateNewPost: View {
-    
+    var copyingPost: Bool = false
+    var postToCopy: Post?
     /// - Callbacks
     var onPost: (Post) -> ()
     
     /// - Post Properties
     @State private var postTitle: String = "" // for post title TextField
-    @State private var postText: String = "" // for post content TextField
     @State private var postURL: String = "" // for post title TextField
-
+    @State private var postText: String = "" // for post content TextField
     @State private var postImageData: Data? // for post image
     
     /// - Stored User Data From UserDefaults(AppStorage)
@@ -34,7 +34,9 @@ struct CreateNewPost: View {
     @State private var errorMessage: String = "" // for storing error message in the alert
     @State private var showImagePicker: Bool = false // for triggering photo gallery as a sheet
     @State private var photoItem: PhotosPickerItem? // for storing the selected image
-    @FocusState private var showKeyboard: Bool // for hiding the keyboard when post or done buttons are clicked
+    @FocusState private var showTitleKeyboard: Bool // for hiding the keyboard when post or done buttons are clicked
+    @FocusState private var showURLKeyboard: Bool // for hiding the keyboard when post or done buttons are clicked
+    @FocusState private var showTextKeyboard: Bool // for hiding the keyboard when post or done buttons are clicked
     
     var body: some View {
         VStack {
@@ -59,7 +61,7 @@ struct CreateNewPost: View {
                         .background(.secondary, in: Capsule())
                 }
                 .disableWithOpacity(postTitle.isEmpty)
-
+                
             }
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
@@ -71,17 +73,19 @@ struct CreateNewPost: View {
             VStack {
                 Group {
                     TextField("Wish title", text: $postTitle)
+                        .focused($showTitleKeyboard)
                     TextField("URL (optional)", text: $postURL)
+                        .focused($showURLKeyboard)
                 }
                 .padding(.bottom, 10)
                 .padding(.horizontal)
             }
             Divider()
-
+            
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 15) {
                     TextField("What's happening?", text: $postText, axis: .vertical)
-                        .focused($showKeyboard)
+                        .focused($showTextKeyboard)
                     if let postImageData, let image = UIImage(data: postImageData) {
                         GeometryReader {
                             let size = $0.size
@@ -90,7 +94,7 @@ struct CreateNewPost: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: size.width, height: size.height)
                                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                /// - Delete Button
+                            /// - Delete Button
                                 .overlay(alignment: .topTrailing) {
                                     Button {
                                         withAnimation(.easeInOut(duration: 0.25)) {
@@ -102,7 +106,7 @@ struct CreateNewPost: View {
                                             .tint(.red)
                                     }
                                     .padding(10)
-
+                                    
                                 }
                         }
                         .clipped()
@@ -126,7 +130,7 @@ struct CreateNewPost: View {
                 .hAlign(.leading)
                 
                 Button("Done") {
-                    showKeyboard = false
+                    hideAllKeyboards()
                 }
 
             }
@@ -135,7 +139,15 @@ struct CreateNewPost: View {
             .padding(.vertical, 10)
         }
         .onAppear {
-            showKeyboard = true
+
+            if copyingPost {
+                guard postToCopy != nil else {
+                    dismiss()
+                    return
+                }
+                populateDataForPostToCopy()
+            }
+            showTitleKeyboard = true
         }
         .vAlign(.top)
         .photosPicker(isPresented: $showImagePicker, selection: $photoItem, matching: .images)
@@ -160,10 +172,40 @@ struct CreateNewPost: View {
         }
     }
     
+    func populateDataForPostToCopy() {
+        guard let post = postToCopy else { return }
+        postTitle = post.title
+        postURL = post.url
+        postText = post.text
+        Task {
+            if let imageURL = post.imageURL { // if post to copy contains an image, fetch it
+                setDataFromURL(url: imageURL)
+            }
+        }
+    }
+    
+    func setDataFromURL(url: URL) {
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            // Error handling...
+            guard let imageData = data else { return }
+            
+            DispatchQueue.main.async {
+                postImageData = imageData
+            }
+        }.resume()
+    }
+    
+    func hideAllKeyboards() {
+        showTitleKeyboard = false
+        showURLKeyboard = false
+        showTextKeyboard = false
+    }
+    
     // MARK: Post Content To Firebase
     func createPost() {
         isLoading = true
-        showKeyboard = false
+        hideAllKeyboards()
+        
         Task {
             do {
                 guard let profileURL = profileURL else { return }

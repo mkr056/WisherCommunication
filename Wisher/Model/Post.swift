@@ -28,8 +28,11 @@ struct Post: Identifiable, Codable, Equatable, Hashable {
     var publishedDate: Date = Date()
     
     // People's user IDs who liked or disliked
-    var likedIDs: [String] = []
-    var dislikedIDs: [String] = []
+    var likedIDs: Set = Set<String>()
+    var dislikedIDs: Set = Set<String>()
+    
+    var seenCount: Int = 0
+    var seenIDs: Set = Set<String>()
     
     // Post Author's basic info (for Post View)
     var userName: String
@@ -37,6 +40,6 @@ struct Post: Identifiable, Codable, Equatable, Hashable {
     var userProfileURL: URL
     
     enum CodingKeys: CodingKey {
-        case id, title, url, text, isReceived, imageURL, imageReferenceID, publishedDate, likedIDs, dislikedIDs, userName, userUID, userProfileURL
+        case id, title, url, text, isReceived, imageURL, imageReferenceID, publishedDate, likedIDs, dislikedIDs, seenCount, seenIDs, userName, userUID, userProfileURL
     }
 }

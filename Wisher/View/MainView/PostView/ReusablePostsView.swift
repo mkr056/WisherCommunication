@@ -19,6 +19,7 @@ struct ReusablePostsView: View { // why Reusable: We need to display the current
     // MARK: Pagination
     @State private var paginationDoc: QueryDocumentSnapshot?
     
+    @StateObject var copyingPost = CopyingPost() // object that contains necessary properties for copying post
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -41,6 +42,11 @@ struct ReusablePostsView: View { // why Reusable: We need to display the current
                 }
             }
             .padding(15)
+        }
+        .fullScreenCover(isPresented: $copyingPost.createNewPost) {
+            CreateNewPost(copyingPost: true, postToCopy: copyingPost.postToCopy) { post in
+                feedPosts.insert(post, at: 0)
+            }
         }
         .refreshable {
             // MARK: Scroll To Refresh
@@ -71,7 +77,7 @@ struct ReusablePostsView: View { // why Reusable: We need to display the current
     @ViewBuilder
     func Posts() -> some View {
         ForEach(feedPosts) { post in
-            PostCardView(post: post) { updatedPost in
+            PostCardView(post: post, copyingPost: copyingPost) { updatedPost in
                 // MARK: Updating Post in the Array
                 if let index = feedPosts.firstIndex(where: { post in
                     post.id == updatedPost.id

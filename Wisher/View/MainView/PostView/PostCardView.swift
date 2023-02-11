@@ -12,6 +12,8 @@ import FirebaseStorage
 
 struct PostCardView: View {
     var post: Post // post for which information has to be displayed
+    @ObservedObject var copyingPost: CopyingPost
+    
     // MARK: Callbacks
     var onUpdate: (Post) -> () // action to be run on post when interaction happened
     var onDelete: () -> ()
@@ -159,6 +161,18 @@ struct PostCardView: View {
                 .font(.caption)
                 .foregroundColor(.gray)
             
+            if post.userUID != userUID {
+                Button(action: copyPost) {
+                    Image(systemName: "bookmark.circle.fill")
+                }
+            }
+            
+            Spacer()
+            
+            Label("\(post.seenCount)", systemImage: "eye")
+                .onAppear {
+                    seePost()
+                }
         }
         .foregroundColor(.primary)
         .padding(.vertical, 8)
@@ -197,6 +211,23 @@ struct PostCardView: View {
                 try await Firestore.firestore().collection("Posts").document(postID).updateData([
                     "likedIDs": FieldValue.arrayRemove([userUID]),
                     "dislikedIDs": FieldValue.arrayUnion([userUID])
+                ])
+            }
+        }
+    }
+    
+    func copyPost() {
+        copyingPost.createNewPost = true
+        copyingPost.postToCopy = post
+    }
+    
+    func seePost() {
+        Task {
+            guard let postID = post.id else { return }
+            if !post.seenIDs.contains(userUID) {
+                try await Firestore.firestore().collection("Posts").document(postID).updateData([
+                    "seenCount": post.seenCount + 1,
+                    "seenIDs": FieldValue.arrayUnion([userUID])
                 ])
             }
         }
@@ -243,4 +274,9 @@ struct PostCardView: View {
         
         return false
     }
+}
+
+class CopyingPost: ObservableObject {
+    @Published var createNewPost: Bool = false
+    @Published var postToCopy: Post?
 }
