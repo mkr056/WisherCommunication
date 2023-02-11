@@ -40,7 +40,8 @@ struct SearchUserView: View {
         .onChange(of: searchText, perform: { newValue in
             if newValue.isEmpty {
                 fetchedUsers.removeAll()
-                
+            } else {
+                Task { await searchUsers() }
             }
         })
     }
@@ -49,8 +50,8 @@ struct SearchUserView: View {
         do {
 
             let documents = try await Firestore.firestore().collection("Users") // because there is no way to search for "String Contains" in Firebase Firestore, we must use greater of less than equivalence to find strings in the document
-                .whereField("username", isGreaterThanOrEqualTo: searchText) // since I've stored the username in the way the user typed it, I am passing the search text directly instead of making it lowercased
-                .whereField("username", isLessThanOrEqualTo: "\(searchText)\u{f8ff}")
+                .whereField("username", isGreaterThanOrEqualTo: searchText.capitalized) // since I've stored the username in the way the user typed it, I am passing the search text directly instead of making it lowercased
+                .whereField("username", isLessThanOrEqualTo: "\(searchText.capitalized)\u{f8ff}")
                 .getDocuments()
             let users = try documents.documents.compactMap { doc -> User? in
                 try doc.data(as: User.self)
